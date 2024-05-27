@@ -18,5 +18,4 @@ const parseConnectionResponse = (res) => {
   };
 };
 
-//console.log(parseConnectionResponse(Buffer.from("000000002346D86893E31BD000E1009C","hex")));
 export { createConnectionRequest, parseConnectionResponse };

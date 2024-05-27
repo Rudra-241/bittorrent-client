@@ -33,8 +33,8 @@ const getSize = (torrent) => {
   let size = BigInt(0);
   if (torrent.info.files) {
     size = torrent.info.files
-      .map((file) => BigInt(file.length)) // Convert each file length to BigInt
-      .reduce((a, b) => a + b, BigInt(0)); // Ensure reduction is done with BigInt
+      .map((file) => BigInt(file.length)) 
+      .reduce((a, b) => a + b, BigInt(0)); 
   } else {
     size = BigInt(torrent.info.length); // Convert to BigInt
   }

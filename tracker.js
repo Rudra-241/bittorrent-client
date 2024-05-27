@@ -22,7 +22,7 @@ const getPeers = (torrent, callback) => {
         connectionResponse.connectionId,
         torrent
       );
-      
+      sendMessageUDP(announceRequest,url,socket);
     } else if (resType === 1) {
       // announce
       const announceResponse = parseAnnounceResponse(res);
