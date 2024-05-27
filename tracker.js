@@ -13,7 +13,7 @@ const getPeers = (torrent, callback) => {
   sendMessageUDP(createConnectionRequest(), url, socket);
 
   socket.on("message", (res) => {
-    resType = res.readUInt32BE(0);
+    const resType = parseConnectionResponse(res).action;
     console.log(resType);
     if (resType === 0) {
       // connect
@@ -22,6 +22,7 @@ const getPeers = (torrent, callback) => {
         connectionResponse.connectionId,
         torrent
       );
+      
     } else if (resType === 1) {
       // announce
       const announceResponse = parseAnnounceResponse(res);
@@ -33,7 +34,8 @@ const getPeers = (torrent, callback) => {
 };
 
 const sendMessageUDP = (message, url, socket, callback = () => {}) => {
-  socket.send(message, 0, message.length, url.port, url.host, callback);
+  console.log(message, 0, message.length, url.port, url.hostname, callback);
+  socket.send(message, 0, message.length, url.port, url.hostname, callback);
 };
 //see 3.3
 

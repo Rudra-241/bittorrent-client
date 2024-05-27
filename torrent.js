@@ -2,26 +2,25 @@ import fs from "fs";
 import bencode from "bencode";
 import { createHash } from "crypto";
 
+// Just a helper function to convert BigInt to Buffers
+function bigIntToBuffer(bigInt) {
+  if (typeof bigInt !== "bigint") {
+    throw new TypeError("Input must be a BigInt");
+  }
 
+  // Convert the BigInt to a hex string
+  let hex = bigInt.toString(16);
 
-// Just a helper function to convert BigInt to Buffers 
-const bigIntToBuffer = (bigint) => {
-  let hex = bigint.toString(16);
+  // Ensure the hex string has an even length
   if (hex.length % 2) {
-    hex = '0' + hex;
+    hex = "0" + hex;
   }
-  const len = hex.length / 2;
-  const u8 = new Uint8Array(len);
-  let i = 0;
-  let j = 0;
-  while (i < len) {
-    u8[i] = parseInt(hex.slice(j, j + 2), 16);
-    i += 1;
-    j += 2;
-  }
-  return u8;
-};
 
+  // Create a buffer from the hex string
+  const buffer = Buffer.from(hex, "hex");
+
+  return buffer;
+}
 
 const decodeTorrent = (filepath = "./demo.torrent") => {
   return bencode.decode(fs.readFileSync(filepath));
@@ -30,20 +29,16 @@ const decodeTorrent = (filepath = "./demo.torrent") => {
 const getInfoHash = (torrent) => {
   return createHash("sha1").update(bencode.encode(torrent.info)).digest();
 };
-
 const getSize = (torrent) => {
   let size = BigInt(0);
   if (torrent.info.files) {
     size = torrent.info.files
-      .map((file) => file.length)
-      .reduce((a, b) => a + b);
+      .map((file) => BigInt(file.length)) // Convert each file length to BigInt
+      .reduce((a, b) => a + b, BigInt(0)); // Ensure reduction is done with BigInt
   } else {
-    size = torrent.info.length;
+    size = BigInt(torrent.info.length); // Convert to BigInt
   }
   return bigIntToBuffer(size);
 };
-
-
-
 
 export { decodeTorrent, getInfoHash, getSize };

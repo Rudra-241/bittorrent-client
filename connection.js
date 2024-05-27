@@ -10,13 +10,13 @@ const createConnectionRequest = () => {
   return buf;
 };
 
-const parseConnectionResponse = (req) => {
+const parseConnectionResponse = (res) => {
   return {
-    action: req.readUInt32BE(0),
-    transactionId: req.readUInt32BE(4),
-    connectionId: req.slice(8),
+    action: res.readUInt32BE(0),
+    transactionId: res.readUInt32BE(4),
+    connectionId: res.slice(8),
   };
 };
 
+//console.log(parseConnectionResponse(Buffer.from("000000002346D86893E31BD000E1009C","hex")));
 export { createConnectionRequest, parseConnectionResponse };
-
