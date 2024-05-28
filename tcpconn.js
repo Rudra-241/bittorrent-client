@@ -73,11 +73,8 @@ export const cancel = (payload) => {
   const buf = Buffer.alloc(17);
   buf.writeUInt32BE(13, 0);
   buf.writeUInt8(8, 4);
-  // piece index
   buf.writeUInt32BE(payload.index, 5);
-  // begin
   buf.writeUInt32BE(payload.begin, 9);
-  // length
   buf.writeUInt32BE(payload.length, 13);
   return buf;
 };
