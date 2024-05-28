@@ -1,5 +1,5 @@
 import Buffer from "node:buffer";
-
+import { getInfoHash } from "./torrent.js";
 export const keepAlive = () => {
   return Buffer.alloc(4);
 };
@@ -87,13 +87,13 @@ export const port = (payload) => {
   return buf;
 };
 
-export const handshake = (torrent) => {
+export const performHandshake = (torrent) => {
   const buf = Buffer.alloc(68);
   buf.writeUInt8(19, 0);
   buf.write("BitTorrent protocol", 1);
   buf.writeUInt32BE(0, 20);
   buf.writeUInt32BE(0, 24);
-  torrentParser.infoHash(torrent).copy(buf, 28);
+  getInfoHash(torrent).copy(buf, 28);
   buf.write(util.genId());
   return buf;
 };
