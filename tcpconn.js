@@ -86,3 +86,14 @@ export const port = (payload) => {
   buf.writeUInt16BE(payload, 5);
   return buf;
 };
+
+export const handshake = (torrent) => {
+  const buf = Buffer.alloc(68);
+  buf.writeUInt8(19, 0);
+  buf.write("BitTorrent protocol", 1);
+  buf.writeUInt32BE(0, 20);
+  buf.writeUInt32BE(0, 24);
+  torrentParser.infoHash(torrent).copy(buf, 28);
+  buf.write(util.genId());
+  return buf;
+};
