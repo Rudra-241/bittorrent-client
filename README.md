@@ -1,1 +1,1 @@
-Currently broken 
+Currently it is only able to fetch peers, you can save your .torrent file as demo.torrent, run npm install and npm start and you'll get a list of ip addresses of all the peers providing the pieces for your file.
